@@ -8,7 +8,7 @@ function Layout({ children }: LayoutProps) {
   return (
     <div>
       <MainNavigation />
-      <main className="w-11/12 max-w-2xl mx-12 my-auto">{children}</main>
+      <main className="w-11/12 max-w-2xl my-12 mx-auto">{children}</main>
     </div>
   );
 }
