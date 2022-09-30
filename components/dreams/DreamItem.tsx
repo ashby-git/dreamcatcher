@@ -1,7 +1,13 @@
+import { useRouter } from "next/router";
 import { IDreamItem } from "../../types/types";
 import Card from "../ui/Card";
 
-function DreamItem({ image, title, location }: IDreamItem) {
+function DreamItem({ image, title, location, id }: IDreamItem) {
+  const router = useRouter();
+  function showDetailsHandler() {
+    router.push("/" + id);
+  }
+
   return (
     <li className="my-4 mx-0">
       <Card>
@@ -16,6 +22,7 @@ function DreamItem({ image, title, location }: IDreamItem) {
         </div>
         <div className="p-6 text-center">
           <button
+            onClick={showDetailsHandler}
             className=" cursor-pointer text-red-900 border border-solid border-red-900 bg-transparent 
           py-2 px-6 rounded hover:bg-gray-200 active:bg-gray-200"
           >
