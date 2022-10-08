@@ -12,17 +12,25 @@ export default async function handler(
   if (req.method == "POST") {
     const data = req.body;
 
-    const client = await MongoClient.connect(process.env.MONGODB_URI);
-    const db = client.db();
+    let client;
 
-    const dreamsCollection = db.collection("dreams");
+    try {
+      client = await MongoClient.connect(process.env.MONGODB_URI);
+    } catch (error) {
+      res.status(500).json({ message: "Connecting to the database failed!" });
+      return;
+    }
 
-    const result = await dreamsCollection.insertOne(data);
-
-    console.log(result);
-
-    client.close();
-
+    try {
+      const db = client.db();
+      const dreamsCollection = db.collection("dreams");
+      const result = await dreamsCollection.insertOne(data);
+      console.log(result);
+      client.close();
+    } catch (error) {
+      res.status(500).json({ message: "Inserting data failed!" });
+      return;
+    }
     res.status(201).json({ message: "Dream inserted!" });
   }
 }
