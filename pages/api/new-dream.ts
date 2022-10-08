@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import clientPromise, { insertDocument } from "../../lib/mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -15,22 +15,20 @@ export default async function handler(
     let client;
 
     try {
-      client = await MongoClient.connect(process.env.MONGODB_URI);
+      client = await clientPromise;
     } catch (error) {
       res.status(500).json({ message: "Connecting to the database failed!" });
       return;
     }
 
     try {
-      const db = client.db();
-      const dreamsCollection = db.collection("dreams");
-      const result = await dreamsCollection.insertOne(data);
-      console.log(result);
+      await insertDocument(client, "dreams", data);
       client.close();
     } catch (error) {
       res.status(500).json({ message: "Inserting data failed!" });
       return;
     }
+
     res.status(201).json({ message: "Dream inserted!" });
   }
 }
