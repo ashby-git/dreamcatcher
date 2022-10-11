@@ -23,7 +23,6 @@ export default async function handler(
 
     try {
       await insertDocument(client, "dreams", data);
-      client.close();
     } catch (error) {
       res.status(500).json({ message: "Inserting data failed!" });
       return;
