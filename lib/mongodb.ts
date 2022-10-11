@@ -33,8 +33,6 @@ if (process.env.NODE_ENV === "development") {
 // separate module, the client can be shared across functions.
 export default clientPromise;
 
-//clientPromise
-
 export async function insertDocument(
   client: MongoClient,
   collection: string,
@@ -43,4 +41,10 @@ export async function insertDocument(
   const db = client.db();
   const result = await db.collection(collection).insertOne(document);
   return result;
+}
+
+export async function getAllDocuments(client: MongoClient, collection: string) {
+  const db = client.db();
+  const documents = await db.collection(collection).find().toArray();
+  return documents;
 }
